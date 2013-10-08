@@ -1,0 +1,112 @@
+Genome	Downdb name	Fieldname Prefix	dbtype	Type	Done		
+hg18 	avsift 	avsift 	avsift 	variant_other	0	whole-exome SIFT scores for non-synonymous variants 	"file updated 2011Mar01, index updated 2012Feb22"
+hg19 	avsift 	avsift 	avsift 	variant_other	0	same as above 	"file updated 2011Mar01, index updated 2012Feb22"
+hg18 	ljb_sift 	ljb_sift 	ljb_sift 	variant_other	0	whole-exome LJBSIFT scores (which corresponds to 1-SIFT !!!!!) 	file and index updated 2012Feb22
+hg19 	ljb_sift 	ljb_sift 	ljb_sift 	variant_other	0	same as above 	file and index updated 2012Feb22
+hg18 	ljb2_sift 	ljb2_sift 	ljb2_sift 	variant_other	0	whole-exome SIFT scores (version 2) 	file and index updated 2013Jun21
+hg18 	ljb_pp2 	ljb_pp2 	ljb_pp2 	variant_other	0	whole-exome PolyPhen scores 	"file updated 2011May11, index updated 2012Feb22"
+hg19 	ljb_pp2 	ljb_pp2 	ljb_pp2 	variant_other	0	same as above 	"file updated 2011May11, index updated 2012Feb22"
+hg18 	ljb2_pp2hdiv 	ljb2_pp2hdiv 	ljb2_pp2hdiv 	variant_other	0	whole-exome PolyPhen scores built on HumanDiv database (for complex phenotypes) 	file and index updated 2013Jun21
+hg19 	ljb2_pp2hdiv 	ljb2_pp2hdiv 	ljb2_pp2hdiv 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb2_pp2hvar 	ljb2_pp2hvar 	ljb2_pp2hvar 	variant_other	0	whole-exome PolyPhen version 2 scores built on HumanVar database (for Mendelian phenotypes) 	file and index updated 2013Jun21
+hg19 	ljb2_pp2hvar 	ljb2_pp2hvar 	ljb2_pp2hvar 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb_phylop 	ljb_phylop 	ljb_phylop 	variant_other	0	whole-exome PhyloP scores 	"file updated 2011May11, index updated 2012Feb22"
+hg19 	ljb_phylop 	ljb_phylop 	ljb_phylop 	variant_other	0	same as above 	"file updated 2011May11, index updated 2012Feb22"
+hg18 	ljb2_phylop 	ljb2_phylop 	ljb2_phylop 	variant_other	0	whole-exome PhyloP scores (version 2) 	file and index updated 2013Jun21
+hg19 	ljb2_phylop 	ljb2_phylop 	ljb2_phylop 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb_lrt 	ljb_lrt 	ljb_lrt 	variant_other	0	whole-exome LRT scores 	"file updated 2011May11, index updated 2012Feb22"
+hg19 	ljb_lrt 	ljb_lrt 	ljb_lrt 	variant_other	0	same as above 	"file updated 2011May11, index updated 2012Feb22"
+hg18 	ljb2_lrt 	ljb2_lrt 	ljb2_lrt 	variant_other	0	whole-exome LRT scores (version 2) 	file and index updated 2013Jun21
+hg19 	ljb2_lrt 	ljb2_lrt 	ljb2_lrt 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb_mt 	ljb_mt 	ljb_mt 	variant_other	0	whole-exome MutationTaster scores 	"file updated 2011May11, index updated 2012Feb22"
+hg19 	ljb_mt 	ljb_mt 	ljb_mt 	variant_other	0	same as above 	"file updated 2011May11, index updated 2012Feb22"
+hg18 	ljb2_mt 	ljb2_mt 	ljb2_mt 	variant_other	0	whole-exome MutationTaster scores (version 2) 	file and index updated 2013Jun21
+hg19 	ljb2_mt 	ljb2_mt 	ljb2_mt 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb2_ma 	ljb2_ma 	ljb2_ma 	variant_other	0	whole-exome MutationAssessor scores (version 2) 	file and index updated 2013Jun21
+hg19 	ljb2_ma 	ljb2_ma 	ljb2_ma 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb2_fathmm 	ljb2_fathmm 	ljb2_fathmm 	variant_other	0	whole-exome FATHMM scores 	file and index updated 2013Jun21
+hg19 	ljb2_fathmm 	ljb2_fathmm 	ljb2_fathmm 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb2_siphy 	ljb2_siphy 	ljb2_siphy 	variant_other	0	whole-exome SiPhy scores 	file and index updated 2013Jun21
+hg19 	ljb2_siphy 	ljb2_siphy 	ljb2_siphy 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb_gerp++ 	ljb_gerp++ 	ljb_gerp++ 	variant_other	0	whole-exome GERP++ scores 	file and index updated 2012Feb22
+hg19 	ljb_gerp++ 	ljb_gerp++ 	ljb_gerp++ 	variant_other	0	same as above 	file and index updated 2012Feb22
+hg18 	ljb2_gerp++ 	ljb2_gerp++ 	ljb2_gerp++ 	variant_other	0	whole-exome GERP++ scores (version 2) 	file and index updated 2013Jun21
+hg19 	ljb2_gerp++ 	ljb2_gerp++ 	ljb2_gerp++ 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	ljb_all 	ljb_all 	ljb_all 	variant_other	0	"whole-exome LJBSIFT, PolyPhen, PhyloP, LRT, MutationTaster, GERP++ scores "	file and index updated 2012Feb22
+hg19 	ljb_all 	ljb_all 	ljb_all 	variant_other	0	same as above 	file and index updated 2012Feb22
+hg18 	ljb2_all 	ljb2_all 	ljb2_all 	variant_other	0	"whole-exome SIFT scores, PolyPhen2 HDIV scores, PolyPhen2 HVAR scores, LRT scores, MutationTaster scores, MutationAssessor score, FATHMM scores, GERP++ scores, PhyloP scores and SiPhy scores "	file and index updated 2013Jun21
+hg19 	ljb2_all 	ljb2_all 	ljb2_all 	variant_other	0	same as above 	file and index updated 2013Jun21
+hg18 	cg46 	cg46 	cg46 	variant_other	0	alternative allele frequency in 46 unrelated human subjects sequenced by Complete Genomics 	index updated 2012Feb22
+hg19 	cg46 	cg46 	cg46 	variant_other	0	same as above 	index updated 2012Feb22
+hg18 	cg69 	cg69 	cg69 	variant_other	0	allele frequency in 69 human subjects sequenced by Complete Genomics 	index updated 2012Feb22
+hg19 	cg69 	cg69 	cg69 	variant_other	0	same as above 	index updated 2012Feb22
+hg19 	cosmic64 	cosmic64 	cosmic64 	variant_other	0	"COSMIC database version 64 (previously observed cancer mutations, their identifiers in COSMIC, how many times are observed, and in which cancer tissues are observed). Including non-coding variants. "	file and index updated 20130520
+hg19 	cosmic65 	cosmic65 	cosmic65 	variant_other	0	COSMIC database version 65. 	file and index updated 20130706
+hg18 	esp5400_aa 	esp5400_aa 	esp5400_aa 	variant_other	0	alternative allele frequency in African Americans in the NHLBI-ESP project with 5400 exomes 	file and index updated 2012Jul11
+hg19 	esp5400_aa 	esp5400_aa 	esp5400_aa 	variant_other	0	same as above 	file and index updated 2012Jul11
+hg18 	esp5400_ea 	esp5400_ea 	esp5400_ea 	variant_other	0	alternative allele frequency in European Americans in the NHLBI-ESP project with 5400 exomes 	file and index updated 2012Jul11
+hg19 	esp5400_ea 	esp5400_ea 	esp5400_ea 	variant_other	0	same as above 	file and index updated 2012Jul11
+hg18 	esp5400_all 	esp5400_all 	esp5400_all 	variant_other	0	alternative allele frequency in all subjects in the NHLBI-ESP project with 5400 exomes 	file and index updated 2012Jul11
+hg19 	esp5400_all 	esp5400_all 	esp5400_all 	variant_other	0	same as above 	file and index updated 2012Jul11
+hg18 	esp6500_aa 	esp6500_aa 	esp6500_aa 	variant_other	0	alternative allele frequency in African Americans in the NHLBI-ESP project with 6500 exomes 	index updated 2012Jun21
+hg19 	esp6500_aa 	esp6500_aa 	esp6500_aa 	variant_other	0	same as above 	index updated 2012Jun21
+hg18 	esp6500_ea 	esp6500_ea 	esp6500_ea 	variant_other	0	alternative allele frequency in European Americans in the NHLBI-ESP project with 6500 exomes 	index updated 2012Jun21
+hg19 	esp6500_ea 	esp6500_ea 	esp6500_ea 	variant_other	0	same as above 	index updated 2012Jun21
+hg18 	esp6500_all 	esp6500_all 	esp6500_all 	variant_other	0	alternative allele frequency in all subjects in the NHLBI-ESP project with 6500 exomes 	index updated 2012Jun21
+hg19 	esp6500_all 	esp6500_all 	esp6500_all 	variant_other	0	same as above 	index updated 2012Jun21
+hg18 	esp6500si_aa 	esp6500si_aa 	esp6500si_aa 	variant_other	0	"alternative allele frequency in African Americans in the NHLBI-ESP project with 6500 exomes, including the indel calls and the chrY calls "	file and index updated 2013Jan22
+hg19 	esp6500si_aa 	esp6500si_aa 	esp6500si_aa 	variant_other	0	same as above 	file and index updated 2013Jan22
+hg18 	esp6500si_ea 	esp6500si_ea 	esp6500si_ea 	variant_other	0	"alternative allele frequency in European Americans in the NHLBI-ESP project with 6500 exomes, including the indel calls and the chrY calls "	file and index updated 2013Jan22
+hg19 	esp6500si_ea 	esp6500si_ea 	esp6500si_ea 	variant_other	0	same as above 	file and index updated 2013Jan22
+hg18 	esp6500si_all 	esp6500si_all 	esp6500si_all 	variant_other	0	"alternative allele frequency in all subjects in the NHLBI-ESP project with 6500 exomes, including the indel calls and the chrY calls "	file and index updated 2013Jan22
+hg19 	esp6500si_all 	esp6500si_all 	esp6500si_all 	variant_other	0	same as above 	file and index updated 2013Jan22
+hg18 	snp128 	snp128 	snp128 	variant_snp	0	dbSNP with ANNOVAR index files 	index updated 2012Feb22
+hg18 	snp129 	snp129 	snp129 	variant_snp	0	same as above 	index updated 2012Feb22
+hg19 	snp129 	snp129 	snp129 	variant_snp	0	"liftover from hg18_snp129.txt. This is the last pristine dbSNP to be used in benchmarking studies, etc "	file and index updated 2012Aug09
+hg18 	snp130 	snp130 	snp130 	variant_snp	0	same as above 	index updated 2012Feb22
+hg19 	snp130 	snp130 	snp130 	variant_snp	0	same as above 	index updated 2012Feb22
+hg18 	snp131 	snp131 	snp131 	variant_snp	0	same as above 	index updated 2012Feb22
+hg19 	snp131 	snp131 	snp131 	variant_snp	0	same as above 	index updated 2012Feb22
+hg18 	snp132 	snp132 	snp132 	variant_snp	0	same as above 	index updated 2012Feb22
+hg19 	snp132 	snp132 	snp132 	variant_snp	0	same as above 	index updated 2012Feb22
+hg18 	snp135 	snp135 	snp135 	variant_snp	0	"I lifted over SNP135 to hg18, to help researchers working with hg18 coordinates "	index and file updated 20120820
+hg19 	snp135 	snp135 	snp135 	variant_snp	0	same as above 	file and index updated 2012Feb22
+hg19 	snp137 	snp137 	snp137 	variant_snp	0	same as above 	file and index updated 20130109
+hg18 	snp128NonFlagged 	snp128NonFlagged 	snp128NonFlagged 	variant_snp	0	"dbSNP with ANNOVAR index files, after removing those flagged SNPs (SNPs < 1% minor allele frequency (MAF) (or unknown), mapping only once to reference assembly, flagged in dbSnp as ""clinically associated"") "	file and index updated 2012May24
+hg18 	snp129NonFlagged 	snp129NonFlagged 	snp129NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg18 	snp130NonFlagged 	snp130NonFlagged 	snp130NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg19 	snp130NonFlagged 	snp130NonFlagged 	snp130NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg18 	snp131NonFlagged 	snp131NonFlagged 	snp131NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg19 	snp131NonFlagged 	snp131NonFlagged 	snp131NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg18 	snp132NonFlagged 	snp132NonFlagged 	snp132NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg19 	snp132NonFlagged 	snp132NonFlagged 	snp132NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg19 	snp135NonFlagged 	snp135NonFlagged 	snp135NonFlagged 	variant_snp	0	same as above 	file and index updated 2012May24
+hg19 	snp137NonFlagged 	snp137NonFlagged 	snp137NonFlagged 	variant_snp	0	same as above 	file and index updated 20130109
+hg19 	nci60 	nci60 	nci60 	variant_other	0	NCI-60 human tumor cell line panel exome sequencing allele frequency data 	file and index updated 20130724
+hg18 	popfreq_max 	popfreq_max 	popfreq_max 	variant_other	0	A database containing the maximum allele frequency from these tables: 1000G2012APR_ALL 1000G2012APR_AFR 1000G2012APR_AMR 1000G2012APR_ASN 1000G2012APR_EUR ESP6500si_AA ESP6500si_EA CG46 	file and index updated 20130821
+hg19 	popfreq_max 	popfreq_max 	popfreq_max 	variant_other	0	same as above 	file and index updated 20130821
+hg18 	refGene 	refGene 	refGene 	gene	0	FASTA sequences for all annotated transcripts in RefSeq Gene 	file updated 2013feb11
+hg19 	refGene 	refGene 	refGene 	gene	0	same as above 	file updated 2013feb11
+hg18 	knownGene 	knownGene 	knownGene 	gene	0	FASTA sequences for all annotated transcripts in UCSC Known Gene 	file updated 2013feb11
+hg19 	knownGene 	knownGene 	knownGene 	gene	0	same as above 	file updated 2013feb11
+hg18 	ensGene 	ensGene 	ensGene 	gene	0	FASTA sequences for all annotated transcripts in ENSEMBL Gene 	file updated 2013feb11
+hg19 	ensGene 	ensGene 	ensGene 	gene	0	same as above 	file updated 2013feb11
+hg18 	gerp++elem 	gerp++elem 	gerp++elem 	region_bed	0	conserved genomic regions by GERP++ 	"this is region-based score, not base-level score"
+hg19 	gerp++elem 	gerp++elem 	gerp++elem 	region_bed	0	same as above 	same as above
+mm9 	gerp++elem 	gerp++elem 	gerp++elem 	region_bed	0	same as above 	same as above
+hg18 	gerp++gt2 	gerp++gt2 	gerp++gt2 	variant_other	0	whole-genome GERP++ scores greater than 2 (RS score threshold of 2 provides high sensitivity while still strongly enriching for truly constrained sites. ) 	file and index updated 2012jun21
+hg19 	gerp++gt2 	gerp++gt2 	gerp++gt2 	variant_other	0	same as above 	file and index updated 2012jun21 
+hg18 	1000g_yri	1000g_yri	1000g_yri	variant_1000g	0	alternative allele frequency data in 1000 Genomes Project 	
+hg18 	1000g_ceu	1000g_ceu	1000g_ceu	variant_1000g	0		
+hg18 	1000g_jptchb	1000g_jptchb	1000g_jptchb	variant_1000g	0		
+hg18 	1000g2010_yri	1000g2010_yri	1000g2010_yri	variant_1000g	0	same as above 	
+hg18 	1000g2010_ceu	1000g2010_ceu	1000g2010_ceu	variant_1000g	0		
+hg18 	1000g2010_jptchb	1000g2010_jptchb	1000g2010_jptchb	variant_1000g	0		
+hg18 	1000g2010jul_yri	1000g2010jul_yri	1000g2010jul_yri	variant_1000g	0	same as above 	
+hg18 	1000g2010jul_ceu	1000g2010jul_ceu	1000g2010jul_ceu	variant_1000g	0		
+hg18 	1000g2010jul_jptchb	1000g2010jul_jptchb	1000g2010jul_jptchb	variant_1000g	0		
+hg18 	1000g2012apr	1000g2012apr_all	1000g2012apr_all	variant_1000g	0	"Note: to download file, use 1000g2012apr. To process file, use 1000g2012apr_all"	
+hg19 	1000g2010nov	1000g2010nov_all	1000g2010nov_all	variant_1000g	0	"Note: To download file, use 1000g2010 nov.  To process file, use 1000g2010nov_all"	
+hg19 	1000g2011may	1000g2011may_all	1000g2011may_all	variant_1000g	0	See above	
+hg19 	1000g2012feb	1000g2012feb_all	1000g2012feb_all	variant_1000g	0	See above	
+hg19 	1000g2012apr	1000g2012apr_all	1000g2012apr_all	variant_1000g	0	See above	

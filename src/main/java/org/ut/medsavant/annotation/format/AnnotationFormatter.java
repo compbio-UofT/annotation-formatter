@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import net.sf.samtools.SAMFormatException;
 import net.sf.samtools.util.BlockCompressedOutputStream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,11 @@ public class AnnotationFormatter {
         UNDEFINED, TINYINT, SMALLINT, MEDIUMINT, INTEGER, BIGINT, DECIMAL, VARCHAR;
     }
     
+    //Allows for multiplexing between gzip-compressed and non gzip-compressed file readers.
+    public interface TabixFileReader{
+        public String readLine() throws Exception;                    
+    }
+      
     private static final Charset LATIN1 = Charset.forName("ISO-8859-1");
     private static final String COLTITLE_CHROM = "CHR";
     private static final String COLTITLE_START = "START";
@@ -72,6 +78,8 @@ public class AnnotationFormatter {
     private int numExtraFields;
     private boolean hasRef;
     private boolean hasAlt;
+    private boolean refSpecified = false; //whether the user specified true or false for ref
+    private boolean altSpecified = false; //ditto for alt.
     private String version;
     private Boolean interval;
     private String program;
@@ -249,25 +257,43 @@ public class AnnotationFormatter {
     private int[] getHeaderMappings(String[] header) throws IllegalArgumentException {
         int[] mappings = {-1, -1, -1, -1, -1};
         numExtraFields = header.length;
-        mainColumnTitles = new String[mappings.length];
+        mainColumnTitles = new String[mappings.length];        
+        int skip = -1;
         for (int i = 0; i < header.length; ++i) {
             if (header[i].equalsIgnoreCase(this.coltitle_chrom)) {
                 mappings[0] = i;
-                numExtraFields--;
+                numExtraFields--;               
                 mainColumnTitles[0] = COLTITLE_CHROM;
             } else if (header[i].equalsIgnoreCase(this.coltitle_start)) {
                 mappings[1] = i;
-                numExtraFields--;
+                numExtraFields--;                
                 mainColumnTitles[1] = COLTITLE_START;
-            } else if (header[i].equalsIgnoreCase(this.coltitle_end) && interval) {
-                mappings[2] = i;
-                numExtraFields--;
-                mainColumnTitles[2] = COLTITLE_END;
+            } else if (header[i].equalsIgnoreCase(this.coltitle_end)) {
+                if(interval){
+                    mappings[2] = i;
+                    numExtraFields--;                
+                    mainColumnTitles[2] = COLTITLE_END;            
+                }else{ //even if annotation is 'position', we'll allow the user to specify an end column, but we'll ignore it.
+                    System.out.println("Detected end column "+this.coltitle_end+" for position annotation.  This column will be IGNORED.");
+                    skip = i;
+                }
             } else if (header[i].equalsIgnoreCase(this.coltitle_ref)) {
-                mappings[interval ? 3 : 2] = i;
+                if(!this.refSpecified){ 
+                    System.out.println("hasRef not specified, but located column called "+this.coltitle_ref+" Assuming hasRef=true");
+                    hasRef=true;
+                }else if(!this.hasRef){
+                    continue;
+                }
+                mappings[interval ? 3 : 2] = i;                
                 numExtraFields--;
                 mainColumnTitles[interval ? 3 : 2] = COLTITLE_REF;
             } else if (header[i].equalsIgnoreCase(this.coltitle_alt)) {
+                if(!this.altSpecified){
+                    System.out.println("hasAlt not specified, but located column called "+this.coltitle_alt+" Assuming hasAlt=true");
+                    hasAlt=true;
+                }else if(!this.hasAlt){
+                    continue;
+                }                
                 mappings[interval ? 4 : 3] = i;
                 numExtraFields--;
                 mainColumnTitles[interval ? 4 : 3] = COLTITLE_ALT;
@@ -293,10 +319,17 @@ public class AnnotationFormatter {
         }
 
         if (outputTabixFile == null) {
+            int j = 0;
             for (int i = 0; i < mappings.length; ++i) {
-                if (mappings[i] != i && mappings[i] != -1) {
-                    throw new IllegalArgumentException("ERROR: Input Tabix file has columns in wrong order, use -fixTabix to write a new tabix file.");
+                System.out.println("mapping "+mappings[i]+" -> "+i);
+                if (mappings[i] != j && mappings[i] != -1){
+                    if(skip != i){
+                        throw new IllegalArgumentException("ERROR: Input Tabix file has columns in wrong order, use -fixTabix to write a new tabix file.");
+                    }else{
+                        j++;
+                    }
                 }
+                j++;
             }
         }
         return mappings;
@@ -409,7 +442,13 @@ public class AnnotationFormatter {
         s += "<annotation program=\"" + program + "\" version=\"" + version + "\" reference=\"" + refgenome + "\" type=\"" + type + "\" hasref=\"" + hasRef + "\" hasalt=\"" + hasAlt + "\">\n";
 
         for (int i = 0; i < extraFields.length; ++i) {
-
+            if(extraFields[i].description.length() < 1){
+                extraFields[i].description = extraFields[i].alias;
+            }
+            if(!interval && extraFields[i].colName.equalsIgnoreCase(this.coltitle_end)){
+                //skip the END field if this is a position annotation.
+                continue;
+            }
             s += "\t<field name=\"" + extraFields[i].colName + "\" type=\"" + extraFields[i].colType + "\" filterable=\"" + extraFields[i].filterable + "\" alias=\"" + extraFields[i].alias + "\" description=\"" + extraFields[i].description + "\" />\n";
         }
         s += "</annotation>\n";
@@ -420,10 +459,32 @@ public class AnnotationFormatter {
         System.out.println("Wrote " + filename);
     }  
 
-    public void readTabix(String filename) throws Exception {
-        TabixReader tr = new TabixReader(filename);
-
-        String fl = tr.readLine().trim();
+  
+    
+    public void readTabix(final String filename) throws Exception {
+        TabixFileReader tr = new TabixFileReader(){            
+            private TabixReader tabixReader = new TabixReader(filename);
+            
+            public String readLine() throws Exception{
+                return tabixReader.readLine();
+            }
+        };
+                        
+        String fl;
+        try{
+            fl = tr.readLine().trim();
+        }catch(SAMFormatException ex){
+            //not a gzip file.  try reading it as tab delimited.
+            System.out.println("WARNING: input tabix file "+filename+" is not a tabix file: "+ex.getMessage()+", assuming uncompressed TSV file.");
+            tr = new TabixFileReader(){
+               private BufferedReader plainTextReader = new BufferedReader(new FileReader(filename));
+               public String readLine() throws Exception{
+                   return plainTextReader.readLine();
+               }
+            };
+            fl = tr.readLine().trim();
+        }
+        
         if (fl.startsWith(TABIX_COMMENT_CHAR)) {
             fl = fl.substring(1);
         }
@@ -617,9 +678,11 @@ public class AnnotationFormatter {
                         } else if (pair[0].equalsIgnoreCase("ref")) {
                             af.coltitle_ref = pair[1];
                             af.hasRef = true;
+                            af.refSpecified = true;
                         } else if (pair[0].equalsIgnoreCase("alt")) {
                             af.coltitle_alt = pair[1];
                             af.hasAlt = true;
+                            af.altSpecified = true;
                         } else if (pair[0].equalsIgnoreCase("start") || pair[0].equalsIgnoreCase("position")) {
                             af.coltitle_start = pair[1];
                         } else if (pair[0].equalsIgnoreCase("end")) {
@@ -662,20 +725,19 @@ public class AnnotationFormatter {
             }
 
             if (af.coltitle_end == null && af.interval) {
-                System.err.println("WARNING: No 'end' column title specified, assuming it's called " + COLTITLE_END);
-                af.coltitle_end = COLTITLE_END;
+                System.err.println("WARNING: No 'end' column title specified, assuming it's called " + COLTITLE_END);                
             }
+            af.coltitle_end = COLTITLE_END;
 
             if (af.hasRef && af.coltitle_ref == null) {
-                System.err.println("WARNING: Reference column was indicated as present, but no name given.  Assuming it's called " + COLTITLE_REF);
-                af.coltitle_ref = COLTITLE_REF;
+                System.err.println("WARNING: Reference column was indicated as present, but no name given.  Assuming it's called " + COLTITLE_REF);                
             }
+            af.coltitle_ref = COLTITLE_REF; 
 
             if (af.hasAlt && af.coltitle_alt == null) {
-                System.err.println("WARNING: Alternate column was indicated as present, but no name given.  Assuming it's called " + COLTITLE_ALT);
-                af.coltitle_alt = COLTITLE_ALT;
+                System.err.println("WARNING: Alternate column was indicated as present, but no name given.  Assuming it's called " + COLTITLE_ALT);                
             }
-
+            af.coltitle_alt = COLTITLE_ALT;
 
             af.readTabix(args[0]);
             af.printXML(args[1]);
