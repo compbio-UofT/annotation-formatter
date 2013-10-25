@@ -57,6 +57,7 @@ public class AnnotationFormatter {
     private static Pattern REGEXP_ALIAS = Pattern.compile(".+");
     private static Pattern REGEXP_BOOLEAN = Pattern.compile("true|false|y|n|0|1|yes|no");
     private static Pattern REGEXP_DESCRIPTION = Pattern.compile(".*"); //allow description to be blank.
+    
     //If the number of characters in a string column matches or exceeds this number, then calculate
     //the number of characters, N, to use in the varchar as the minimum power of 2 (minus 1) that satisfies 
     //(max length in tabix / N) > VARCHAR_RANGE_THRESH. 
@@ -72,11 +73,10 @@ public class AnnotationFormatter {
     private static int[] INT_RANGE = new int[]{-2147483648, 2147483647};
     private static final int MAPPING_COL_CHROM = 0;
     private static final int MAPPING_COL_START = 1;
-    private static final int MAPPING_COL_END = 2; 
-     private static final int MAPPING_COL_REF = 3;
+    private static final int MAPPING_COL_END = 2;
+    private static final int MAPPING_COL_REF = 3;
     private static final int MAPPING_COL_ALT = 4;
     private boolean noEnd = false;
-    
     private Column[] columnTypes;
     private static Pattern INTEGER_PATTERN = Pattern.compile("-?[0-9]+");
     private static Pattern DECIMAL_PATTERN = Pattern.compile("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
@@ -262,15 +262,13 @@ public class AnnotationFormatter {
         bcos.close();
     }
 
-    
-   
     private int[] getHeaderMappings(String[] header) throws IllegalArgumentException {
         int[] mappings = {-1, -1, -1, -1, -1};
         numExtraFields = header.length;
         mainColumnTitles = new String[mappings.length];
 
         noEnd = true;
-        
+
         for (int i = 0; i < header.length; ++i) {
             if (header[i].equalsIgnoreCase(this.coltitle_chrom)) {
                 mappings[MAPPING_COL_CHROM] = i;
@@ -284,28 +282,18 @@ public class AnnotationFormatter {
                 // if(interval){
                 mappings[MAPPING_COL_END] = i;
                 numExtraFields--;
-                mainColumnTitles[MAPPING_COL_END] = COLTITLE_END;               
-                                
-              /*  
-                //}else{ //even if annotation is 'position', we'll allow the user to specify an end column, but we'll ignore it.
-                if (!interval) {
-                //    System.out.println("Detected end column " + this.coltitle_end + " for position annotation.  This required column will be IGNORED and set to Ref");
-                    //skip = i;
-                }
-                * */
+                mainColumnTitles[MAPPING_COL_END] = COLTITLE_END;
+              
             } else if (header[i].equalsIgnoreCase(this.coltitle_ref)) {
                 if (!this.refSpecified) {
                     System.out.println("hasRef not specified, but located column called " + this.coltitle_ref + " Assuming hasRef=true");
                     hasRef = true;
                 } else if (!this.hasRef) {
                     continue;
-                }
-               // mappings[MAPPING_COL_REF] = i;
-                mappings[interval ? 3 : 2] = i;
-                //mappings[3] = i;
+                }                
+                mappings[interval ? 3 : 2] = i;                
                 numExtraFields--;
-                mainColumnTitles[interval ? 3 : 2] = COLTITLE_REF;
-                //mainColumnTitles[MAPPING_COL_REF] = COLTITLE_REF;
+                mainColumnTitles[interval ? 3 : 2] = COLTITLE_REF;                
             } else if (header[i].equalsIgnoreCase(this.coltitle_alt)) {
                 if (!this.altSpecified) {
                     System.out.println("hasAlt not specified, but located column called " + this.coltitle_alt + " Assuming hasAlt=true");
@@ -313,30 +301,12 @@ public class AnnotationFormatter {
                 } else if (!this.hasAlt) {
                     continue;
                 }
-                mappings[interval ? 4 : 3] = i;
-                //mappings[MAPPING_COL_ALT] = i;
+                mappings[interval ? 4 : 3] = i;                
                 numExtraFields--;
-                mainColumnTitles[interval ? 4 : 3] = COLTITLE_ALT;
-                //mainColumnTitles[MAPPING_COL_ALT] = COLTITLE_ALT;
+                mainColumnTitles[interval ? 4 : 3] = COLTITLE_ALT;                
             }
         }
-        /*
-            int j = 0;
-            while (j < headerMappings.length && headerMappings[j] > -1) {
-                newHeader[headerMappings[j]] = mainColumnTitles[j];
-                j++;
-            }
-         */
-        if(!interval && mappings[MAPPING_COL_END] < 0){
-          /*  System.out.println("No optional End column found in 'position' file.  Assuming End=Start. ");
-            noEnd = true;
-            mappings[MAPPING_COL_END] = mappings[MAPPING_COL_START];  
-            mainColumnTitles[MAPPING_COL_END] = COLTITLE_END;
-            for(int i =0; i < mainColumnTitles.length; ++i){
-                System.out.println("maincolumntitles: "+i+" => "+mainColumnTitles[i]+", mappings: "+i+" => "+mappings[i]);
-            }*/
-            //do not decrement numExtraFields           
-        }
+               
 
         if (mappings[0] == -1) {
             throw new IllegalArgumentException("ERROR: Couldn't locate chromosome column called " + this.coltitle_chrom + " in input tabix file\nColumn Titles Found: " + StringUtils.join(header, "; "));
@@ -349,12 +319,10 @@ public class AnnotationFormatter {
             throw new IllegalArgumentException("ERROR: Couldn't locate 'end' column called " + this.coltitle_end + " in input tabix file\nColumn Titles Found: " + StringUtils.join(header, "; "));
         }
 
-        if (hasRef && mappings[interval ? 3 : 2] == -1) {
-        //if (hasRef && mappings[MAPPING_COL_REF] == -1) {
+        if (hasRef && mappings[interval ? 3 : 2] == -1) {            
             throw new IllegalArgumentException("ERROR: Couldn't locate Reference column called " + this.coltitle_ref + " in input tabix file\nColumn Titles Found: " + StringUtils.join(header, "; "));
         }
-        if (hasAlt && mappings[interval ? 4 : 3] == -1) {
-        //if (hasAlt && mappings[MAPPING_COL_ALT] == -1) {
+        if (hasAlt && mappings[interval ? 4 : 3] == -1) {            
             throw new IllegalArgumentException("ERROR: Couldn't locate Alternate column called " + this.coltitle_alt + " in input tabix file\nColumn Titles Found: " + StringUtils.join(header, "; "));
         }
 
@@ -362,20 +330,16 @@ public class AnnotationFormatter {
             int j = 0;
             for (int i = 0; i < mappings.length; ++i) {
                 System.out.println("mapping " + mappings[i] + " -> " + i);
-                if (mappings[i] != j && mappings[i] != -1) {
-                    // if(skip != i){
+                if (mappings[i] != j && mappings[i] != -1) {                    
                     throw new IllegalArgumentException("ERROR: Input Tabix file has columns in wrong order, use -fixTabix to write a new tabix file.");
-                    /*}else{
-                     j++;
-                     }*/
-                }
-                //j++;
+                    
+                }                
             }
         }
         return mappings;
     }
 
-    private String getLine(int[] headerMappings, String[] data){
+    private String getLine(int[] headerMappings, String[] data) {
         String s = data[headerMappings[0]];
         for (int i = 1; i < headerMappings.length; ++i) {
             if (headerMappings[i] != -1) {
@@ -384,29 +348,16 @@ public class AnnotationFormatter {
         }
         for (int i = 0; i < data.length; ++i) {
             if (!ArrayUtils.contains(headerMappings, i)) {
-                s+=("\t" + data[i]);
+                s += ("\t" + data[i]);
             }
         }
-        s+=("\n");
+        s += ("\n");
         return s;
     }
-    
-    
+
     private void outputLine(BufferedWriter out, int[] headerMappings, String[] data) throws IOException {
         out.write(getLine(headerMappings, data));
-        /*
-        out.write(data[headerMappings[0]]);
-        for (int i = 1; i < headerMappings.length; ++i) {
-            if (headerMappings[i] != -1) {
-                out.write("\t" + data[headerMappings[i]]);
-            }
-        }
-        for (int i = 0; i < data.length; ++i) {
-            if (!ArrayUtils.contains(headerMappings, i)) {
-                out.write("\t" + data[i]);
-            }
-        }
-        out.write("\n");*/
+
     }
 
     public String getValue(Pattern constraint, Element e, String a) throws IllegalArgumentException {
@@ -494,15 +445,15 @@ public class AnnotationFormatter {
     public void printXML(String filename) throws IOException {
 
         String type = "position";
-        if(descriptionPrefix != null){
-            descriptionPrefix = descriptionPrefix+", ";
-        }else{
-            descriptionPrefix="";
+        if (descriptionPrefix != null) {
+            descriptionPrefix = descriptionPrefix + ", ";
+        } else {
+            descriptionPrefix = "";
         }
-        if(aliasPrefix != null){
-            aliasPrefix = aliasPrefix+", ";
-        }else{
-            aliasPrefix="";
+        if (aliasPrefix != null) {
+            aliasPrefix = aliasPrefix + ", ";
+        } else {
+            aliasPrefix = "";
         }
         if (this.interval) {
             type = "interval";
@@ -518,7 +469,7 @@ public class AnnotationFormatter {
                 //skip the END field if this is a position annotation.
                 continue;
             }
-            s += "\t<field name=\"" + extraFields[i].colName + "\" type=\"" + extraFields[i].colType + "\" filterable=\"" + extraFields[i].filterable + "\" alias=\"" + aliasPrefix+extraFields[i].alias + "\" description=\"" + descriptionPrefix+extraFields[i].description + "\" />\n";
+            s += "\t<field name=\"" + extraFields[i].colName + "\" type=\"" + extraFields[i].colType + "\" filterable=\"" + extraFields[i].filterable + "\" alias=\"" + aliasPrefix + extraFields[i].alias + "\" description=\"" + descriptionPrefix + extraFields[i].description + "\" />\n";
         }
         s += "</annotation>\n";
         BufferedWriter out = new BufferedWriter(new FileWriter(filename));
@@ -557,16 +508,16 @@ public class AnnotationFormatter {
         }
         String[] header = fl.split("\t");
         int deleteEnd = -1;
-        if(!interval){
+        if (!interval) {
             //delete end column.
             System.out.println("WARNING: END Column found in position file.  This column will be ignored");
             int i = ArrayUtils.indexOf(header, COLTITLE_END);
-            if(i >= 0){
+            if (i >= 0) {
                 ArrayUtils.remove(header, i);
             }
             deleteEnd = i;
         }
-        
+
         int[] headerMappings = getHeaderMappings(header);
 
         File tsv = null;
@@ -576,31 +527,22 @@ public class AnnotationFormatter {
             //Write header, using the headerMappings to determine which columns of the input tabix
             //correspond to the first N columns.
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tsv), "utf-8"));
-                                
-            String[] newHeader = ArrayUtils.clone(header);                                          
-            int j =0;
+
+            String[] newHeader = ArrayUtils.clone(header);
+            int j = 0;
             while (j < headerMappings.length && headerMappings[j] > -1) {
-               // if(noEnd && mainColumnTitles[j].equalsIgnoreCase(COLTITLE_END)){                                        
-                    //No End column was specified.
-               // }else{
-                    newHeader[headerMappings[j]] = mainColumnTitles[j];
-                    System.out.println("Newheader: "+headerMappings[j]+" => "+mainColumnTitles[j]);
-               // }
+                newHeader[headerMappings[j]] = mainColumnTitles[j];
+                System.out.println("Newheader: " + headerMappings[j] + " => " + mainColumnTitles[j]);
                 j++;
             }
-            
+
 
             if (!newHeader[headerMappings[0]].startsWith(TABIX_COMMENT_CHAR)) {
-                newHeader[headerMappings[0]] = TABIX_COMMENT_CHAR + newHeader[headerMappings[0]];                
+                newHeader[headerMappings[0]] = TABIX_COMMENT_CHAR + newHeader[headerMappings[0]];
             }
-            //if(noEnd){
-                //hacky fix.
-              //  String s = getLine(headerMappings, newHeader);
-               // s = s.replace(COLTITLE_START+"\t"+COLTITLE_START, COLTITLE_START+"\t"+COLTITLE_END);
-                //out.write(s);
-            //}else{
-                outputLine(out, headerMappings, newHeader); //moved out of above if-block, oct. 10
-            //}
+
+            outputLine(out, headerMappings, newHeader); //moved out of above if-block, oct. 10
+
         }
 
         String s;
@@ -609,18 +551,14 @@ public class AnnotationFormatter {
             columnTypes[i] = new Column();
         }
 
-        //int dbg = 0;
         while (true) {
             s = tr.readLine();
             if (s == null) {
                 break;
             }
-/*            if(dbg++ > 1000){
-                break;
-            }*/
 
             String[] vals = s.trim().split("\t");
-            if(deleteEnd > -1){
+            if (deleteEnd > -1) {
                 ArrayUtils.remove(vals, deleteEnd);
             }
 
@@ -628,16 +566,10 @@ public class AnnotationFormatter {
                 throw new IOException("Error in file " + filename + ", more columns than column titles");
             }
 
-            //if position, force end=start.
-/*
-            if (!interval) {
-                vals[headerMappings[MAPPING_COL_END]] = vals[headerMappings[MAPPING_COL_START]];                
-            }
-*/
             if (outputTabixFile != null) {
-                //debug code
-                vals[0] = "chr"+vals[0];
-                //end debug code
+                if(!vals[0].startsWith("chr")){                
+                    vals[0] = "chr" + vals[0];
+                }
                 outputLine(out, headerMappings, vals);
             }
 
@@ -649,8 +581,7 @@ public class AnnotationFormatter {
 
                 String nosignStr = str.replace("-", "").replace("+", "");
 
-                if (INTEGER_PATTERN.matcher(str).matches()) {
-                    //tinyint?
+                if (INTEGER_PATTERN.matcher(str).matches()) {                    
                     try {
                         Long x = Long.parseLong(str);
                         if (x >= TINY_INT_RANGE[0] && x <= TINY_INT_RANGE[1]) {
@@ -667,18 +598,18 @@ public class AnnotationFormatter {
                         }
                     } catch (NumberFormatException ex) {
                         if (nosignStr.length() > MAX_DECIMAL_DIGITS) {
-                            if(columnTypes[i].setType(ColumnType.VARCHAR, str.length())){
-                                System.out.println("Field Changed column type to varchar for input column "+i);
+                            if (columnTypes[i].setType(ColumnType.VARCHAR, str.length())) {
+                                System.out.println("Field Changed column type to varchar for input column " + i);
                             }
                         } else {
-                            if(columnTypes[i].setType(ColumnType.DECIMAL, str.length(), nosignStr.length(), 0)){
-                                System.out.println("Field Changed column type to decimal for input column "+i);
-                                
+                            if (columnTypes[i].setType(ColumnType.DECIMAL, str.length(), nosignStr.length(), 0)) {
+                                System.out.println("Field Changed column type to decimal for input column " + i);
+
                             }
                         }
                     }
                 } else if (DECIMAL_PATTERN.matcher(str).matches()) {
-                    if (nosignStr.length() > MAX_DECIMAL_DIGITS) {                        
+                    if (nosignStr.length() > MAX_DECIMAL_DIGITS) {
                         columnTypes[i].setType(ColumnType.VARCHAR, str.length());
                     } else {
                         String[] d = nosignStr.split("\\.");
@@ -686,13 +617,12 @@ public class AnnotationFormatter {
                         if (d.length == 2) {
                             ad = d[1].length();
                         }
-                        //System.out.println("Got after decimal length as "+ad+" for str "+str+" nosign: "+nosignStr);
-                        columnTypes[i].setType(ColumnType.DECIMAL, str.length(), nosignStr.length(), ad);                                                
+                        columnTypes[i].setType(ColumnType.DECIMAL, str.length(), nosignStr.length(), ad);
                     }
-                } else {             
+                } else {
                     columnTypes[i].setType(ColumnType.VARCHAR, str.length());
                 }
-            }            
+            }
         }
 
         extraFields = new Field[numExtraFields];
@@ -796,9 +726,9 @@ public class AnnotationFormatter {
                             af.coltitle_start = pair[1];
                         } else if (pair[0].equalsIgnoreCase("end")) {
                             af.coltitle_end = pair[1];
-                        } else if(pair[0].equalsIgnoreCase("aliasPrefix")){
+                        } else if (pair[0].equalsIgnoreCase("aliasPrefix")) {
                             af.aliasPrefix = pair[1];
-                        } else if(pair[0].equalsIgnoreCase("descriptionPrefix")){
+                        } else if (pair[0].equalsIgnoreCase("descriptionPrefix")) {
                             af.descriptionPrefix = pair[1];
                         }
                     }
