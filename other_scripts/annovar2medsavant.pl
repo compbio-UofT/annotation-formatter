@@ -8,14 +8,13 @@ $SIG{'INT'} = \&death;
 #TEMP dir for unix sort
 
 our $SORT_BUFFER_SIZE = "2G";
-#Should be different disk than database files. (no trailing slash)
+
+#Can be different disk than database files, which should make everything run a bit faster (no trailing slash)
 our $DISK2_TMP = "/home/jim/disk3/jim/tmp";
 
 #Can be same disk as database files. (no trailing slash)
 our $DISK1_TMP = "/mnt/annovar/tmp";
 
-#our $TMPDIR = "/home/jim/tmp";
-#our $SORTED_OUTPUT_DIR = "/home/jim/disk3/jim/tmp";
 our $PROGRAM = "annovar";
 my $afile = shift(@ARGV);
 our $VERSION = shift(@ARGV);
@@ -82,13 +81,6 @@ sub runAnnotationFormatter($$$){
 	my $pathToFile = shift(@_);
 	my $refgenome = shift(@_);
 	my $type= shift(@_); #interval or position
-	
-	#need to know: 
-	# *interval or position
-	# *program
-	# *version
-	# *refgenome
-	
 
 	my $prefix = $pathToFile;
 	$prefix =~ /.*\/(.*)\.tsv.*\.sorted.*/i;
