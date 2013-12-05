@@ -37,7 +37,9 @@ public class AnnotationFormatter {
 
         public String readLine() throws Exception;
     }
-    private static final Charset LATIN1 = Charset.forName("ISO-8859-1");
+    //private static final Charset DEFAULT_CHARSET = Charset.forName("ISO-8859-1");
+    //private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
+    private static final Charset DEFAULT_CHARSET = Charset.forName("US-ASCII");
     private static final String COLTITLE_CHROM = "CHR";
     private static final String COLTITLE_START = "START";
     private static final String COLTITLE_POSITION = "POSITION";
@@ -66,7 +68,7 @@ public class AnnotationFormatter {
     private static final String TABIX_COMMENT_CHAR = "#";
     private static final String TABIX_GZ_EXTENSION = "gz";
     private static final String TABIX_INDEX_EXTENSION = "tbi";
-    private static int MAX_DECIMAL_DIGITS = 65; //maximum number of digits allowed by 'DECIMAL' data type.
+    private static int MAX_DECIMAL_DIGITS = 18; //maximum number of digits allowed by 'DECIMAL' data type.  For infobright it seems to be 18?  (not 65 as in mysql manual)
     private static int[] TINY_INT_RANGE = new int[]{-128, 127};
     private static int[] SMALL_INT_RANGE = new int[]{-32768, 32767};
     private static int[] MEDIUM_INT_RANGE = new int[]{-8388608, 8388607};
@@ -256,8 +258,8 @@ public class AnnotationFormatter {
         BufferedReader br = new BufferedReader(new FileReader(infile));
         String line;
         while ((line = br.readLine()) != null) {
-            line = line + "\n";
-            bcos.write(line.getBytes(LATIN1));
+            line = line + "\n";            
+            bcos.write(line.getBytes(DEFAULT_CHARSET));
         }
         bcos.close();
     }
@@ -356,8 +358,8 @@ public class AnnotationFormatter {
     }
 
     private void outputLine(BufferedWriter out, int[] headerMappings, String[] data) throws IOException {
-        out.write(getLine(headerMappings, data));
-
+        String s = getLine(headerMappings, data);
+        out.write(s);        
     }
 
     public String getValue(Pattern constraint, Element e, String a) throws IllegalArgumentException {
@@ -551,13 +553,16 @@ public class AnnotationFormatter {
             columnTypes[i] = new Column();
         }
 
+        int ln = 0;
         while (true) {
-            s = tr.readLine();
-            if (s == null) {
+            ln++;
+            s = tr.readLine();            
+            if (s == null) {                
                 break;
             }
 
             String[] vals = s.trim().split("\t");
+            //System.out.println(s.trim());
             if (deleteEnd > -1) {
                 ArrayUtils.remove(vals, deleteEnd);
             }
@@ -616,7 +621,7 @@ public class AnnotationFormatter {
                         int ad = 0;
                         if (d.length == 2) {
                             ad = d[1].length();
-                        }
+                        }                        
                         columnTypes[i].setType(ColumnType.DECIMAL, str.length(), nosignStr.length(), ad);
                     }
                 } else {
@@ -649,7 +654,7 @@ public class AnnotationFormatter {
 
             File outputFile = new File(tsv.getPath() + "." + TABIX_GZ_EXTENSION);
             bgZipFile(tsv, outputFile);
-            System.out.println("Wrote fixed tabix file " + outputFile.getPath());
+            System.out.println("Wrote fixed tabix file " + outputFile.getPath());            
             tsv.deleteOnExit();
             TabixWriter tw = new TabixWriter(outputFile, new TabixWriter.Conf(0, 1, 2, interval ? 3 : 0, '#', 0));
             tw.createIndex(outputFile);
@@ -730,7 +735,7 @@ public class AnnotationFormatter {
                             af.aliasPrefix = pair[1];
                         } else if (pair[0].equalsIgnoreCase("descriptionPrefix")) {
                             af.descriptionPrefix = pair[1];
-                        }
+                        } 
                     }
                 }
             }
