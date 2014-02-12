@@ -332,23 +332,28 @@ public class TabixWriter extends TabixReader
         return result;
     }
 
+    //convert a region to a bin.
+    //From the SAMv1.pdf manual:
+    //Each bin spans 2^29, 2^26, 2^23, 2^20, 2^17, or 2^14 bp.  
+    //bin 0 spans 512Mbp, bins 1–8 span 64Mbp, 9–72 8Mbp, 73–584 1Mbp, 585–4680 128Kbp 
+    // and bins 4681–37449 span 16Kbp regions.
     private int reg2bin(int beg, int end)
     {
         --end;
-        if (beg >> 14 == end >> 14) {
+        if (beg >> 14 == end >> 14) { //beg
             return 4681 + (beg >> 14);
         }
         if (beg >> 17 == end >> 17) {
             return 585 + (beg >> 17);
         }
         if (beg >> 20 == end >> 20) {
-            return 73 + (beg >> 20);
+            return 73 + (beg >> 20); //
         }
         if (beg >> 23 == end >> 23) {
-            return 9 + (beg >> 23);
+            return 9 + (beg >> 23); //max val: 2^9-1 + 9 = 520
         }
         if (beg >> 26 == end >> 26) {
-            return 1 + (beg >> 26);
+            return 1 + (beg >> 26); //max val: 32
         }
         return 0;
     }

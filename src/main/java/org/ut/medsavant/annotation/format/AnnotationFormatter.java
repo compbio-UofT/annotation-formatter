@@ -723,6 +723,7 @@ public class AnnotationFormatter {
                             af.coltitle_ref = pair[1];
                             af.hasRef = true;
                             af.refSpecified = true;
+                            //System.out.println("Set coltitle ref to "+af.coltitle_ref);
                         } else if (pair[0].equalsIgnoreCase("alt")) {
                             af.coltitle_alt = pair[1];
                             af.hasAlt = true;
@@ -774,18 +775,21 @@ public class AnnotationFormatter {
 
             if (af.coltitle_end == null && af.interval) {
                 System.err.println("WARNING: No 'end' column title specified, assuming it's called " + COLTITLE_END);
+                af.coltitle_end = COLTITLE_END;
             }
-            af.coltitle_end = COLTITLE_END;
+            
 
             if (af.hasRef && af.coltitle_ref == null) {
                 System.err.println("WARNING: Reference column was indicated as present, but no name given.  Assuming it's called " + COLTITLE_REF);
+                af.coltitle_ref = COLTITLE_REF;
             }
-            af.coltitle_ref = COLTITLE_REF;
+            
 
             if (af.hasAlt && af.coltitle_alt == null) {
                 System.err.println("WARNING: Alternate column was indicated as present, but no name given.  Assuming it's called " + COLTITLE_ALT);
+                af.coltitle_alt = COLTITLE_ALT;
             }
-            af.coltitle_alt = COLTITLE_ALT;
+            
 
             af.readTabix(args[0]);
             af.printXML(args[1]);
